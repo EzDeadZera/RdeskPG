@@ -26,23 +26,24 @@ export async function signInWithUsername(username: string, password: string) {
 
 export async function signUpWithUsername({
   username,
-  email,
   password,
 }: {
   username: string
-  email: string
   password: string
 }) {
+  const normalizedUsername = username.trim().toLowerCase()
+  const email = `${normalizedUsername}@rpg-dashboard.local`
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { username } },
+    options: { data: { username: normalizedUsername } },
   })
 
   if (error) {
     const message = error.message.toLowerCase()
     if (message.includes('already registered') || message.includes('already exists')) {
-      throw new Error('Esse e-mail já está cadastrado.')
+      throw new Error('Esse usuário já está cadastrado.')
     }
     if (message.includes('username')) {
       throw new Error('Esse username já está em uso.')
