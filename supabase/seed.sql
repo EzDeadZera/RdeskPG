@@ -1,0 +1,2 @@
+-- Dados de exemplo para desenvolvimento local.
+-- Populado a partir da Fase 2, quando as tabelas de bibliotecas/atributos existirem.
