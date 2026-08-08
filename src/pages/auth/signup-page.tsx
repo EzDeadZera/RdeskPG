@@ -106,6 +106,15 @@ export function SignupPage() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="email">E-mail</Label>
+            <Input id="email" type="email" autoComplete="email" {...register('email')} />
+            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+            <p className="text-xs text-muted-foreground">
+              Usado só para confirmação de conta e recuperação de senha.
+            </p>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="password">Senha</Label>
             <Input id="password" type="password" autoComplete="new-password" {...register('password')} />
             {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}

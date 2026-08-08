@@ -9,7 +9,10 @@ import { ResetPasswordPage } from '@/pages/auth/reset-password-page'
 import { DashboardPage } from '@/pages/dashboard/dashboard-page'
 import { LibraryPage } from '@/pages/library/library-page'
 import { CampaignPage } from '@/pages/campaign/campaign-page'
+import { CharacterListPage } from '@/pages/campaign/character-list-page'
+import { MasterPanelPage } from '@/pages/campaign/master-panel-page'
 import { CharacterSheetPage } from '@/pages/character-sheet/character-sheet-page'
+import { MapListPage } from '@/pages/map/map-list-page'
 import { MapPage } from '@/pages/map/map-page'
 
 export function AppRouter() {
@@ -30,9 +33,15 @@ export function AppRouter() {
             <Route path="/bibliotecas/:libraryId" element={<LibraryPage />} />
             <Route path="/bibliotecas/:libraryId/campanhas/:campaignId" element={<CampaignPage />} />
             <Route
+              path="/bibliotecas/:libraryId/campanhas/:campaignId/personagens"
+              element={<CharacterListPage />}
+            />
+            <Route path="/bibliotecas/:libraryId/campanhas/:campaignId/mestre" element={<MasterPanelPage />} />
+            <Route
               path="/bibliotecas/:libraryId/campanhas/:campaignId/personagens/:characterId"
               element={<CharacterSheetPage />}
             />
+            <Route path="/bibliotecas/:libraryId/campanhas/:campaignId/mapa" element={<MapListPage />} />
             <Route
               path="/bibliotecas/:libraryId/campanhas/:campaignId/mapa/:mapId"
               element={<MapPage />}

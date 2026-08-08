@@ -1,23 +1,26 @@
 import { useParams } from 'react-router-dom'
-import { Map as MapIcon } from 'lucide-react'
-import { EmptyState } from '@/components/common/empty-state'
+import { useAuth } from '@/contexts/auth-context'
+import { useCampaign } from '@/features/campaigns/hooks/use-campaigns'
+import { useMap } from '@/features/maps/hooks/use-maps'
+import { InteractiveMap } from '@/features/maps/components/interactive-map'
+import { Skeleton } from '@/components/ui/skeleton'
 
-// Upload de imagem base e waypoints clicáveis chegam na Fase 7.
 export function MapPage() {
-  const { mapId } = useParams()
+  const { mapId, campaignId } = useParams<{ libraryId: string; campaignId: string; mapId: string }>()
+  const { user } = useAuth()
+  const { data: campaign } = useCampaign(campaignId)
+  const { data: map, isLoading } = useMap(mapId)
+
+  if (isLoading || !map) {
+    return <Skeleton className="h-96 w-full" />
+  }
+
+  const isMaster = campaign?.master_id === user?.id
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold">Mapa</h1>
-        <p className="text-sm text-muted-foreground">ID: {mapId}</p>
-      </div>
-
-      <EmptyState
-        icon={MapIcon}
-        title="Mapa interativo chega na Fase 7"
-        description="Upload de imagem base e waypoints clicáveis com título, descrição, ícone e cor."
-      />
+    <div className="space-y-4">
+      <h1 className="text-xl font-semibold">{map.nome}</h1>
+      <InteractiveMap map={map} isMaster={isMaster} />
     </div>
   )
 }

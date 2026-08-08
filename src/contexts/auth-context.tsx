@@ -18,33 +18,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let isMounted = true
-
-    const syncSession = async () => {
-      try {
-        const { data } = await supabase.auth.getSession()
-        if (!isMounted) return
-        setSession(data.session)
-      } catch (error) {
-        console.warn('Não foi possível carregar a sessão do Supabase:', error)
-        if (isMounted) setSession(null)
-      } finally {
-        if (isMounted) setLoading(false)
-      }
-    }
-
-    void syncSession()
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session)
+      setLoading(false)
+    })
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      if (!isMounted) return
       setSession(newSession)
       setLoading(false)
     })
 
-    return () => {
-      isMounted = false
-      subscription.subscription.unsubscribe()
-    }
+    return () => subscription.subscription.unsubscribe()
   }, [])
 
   return (

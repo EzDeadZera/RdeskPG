@@ -19,6 +19,7 @@ export type LoginInput = z.infer<typeof loginSchema>
 export const signupSchema = z
   .object({
     username: usernameSchema,
+    email: z.string().email('E-mail inválido'),
     password: passwordSchema,
     confirmPassword: z.string(),
   })
