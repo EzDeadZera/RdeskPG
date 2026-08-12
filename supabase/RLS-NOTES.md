@@ -18,6 +18,20 @@ bloqueada por padrão nem aberta sem policy.
 - `is_campaign_member(campaign_id)` / `is_campaign_master(campaign_id)` — checam `campaign_members`, reusadas em quase toda policy que envolve campanha.
 - `get_email_for_username` / `username_available` — únicas funções chamadas por usuário **não autenticado** (login e cadastro), por isso devolvem só o mínimo necessário (e-mail; disponibilidade), nunca a tabela `profiles` inteira.
 
+## Bug encontrado e corrigido (migration 0007)
+
+`attributes` e `books` ficaram só com a policy de dono da biblioteca — sem a leitura por membro de
+campanha que `libraries` e `equipment_slots` já tinham desde as migrations 0004/0005. Na prática,
+qualquer jogador que não fosse o dono da biblioteca via a aba Atributos vazia (mesmo com atributos
+configurados) e a seção de modificadores nos itens desaparecia (ela só aparece quando há atributos
+carregados). `characters`/`skills`/`items`/`spells` não tinham esse problema — já usavam
+`is_campaign_master`/`is_campaign_member` corretamente desde o início.
+
+Testado com Postgres local + stub do schema `auth`, simulando dono e jogador de verdade: confirmei o
+bug (0 registros pro jogador), apliquei o fix, confirmei que passou a funcionar, e confirmei que não
+abriu acesso indevido (usuário sem vínculo com a campanha continua vendo 0 registros e não consegue
+inserir).
+
 ## Limitação conhecida
 
 Se um jogador for removido de `campaign_members`, os personagens que ele já tinha na campanha continuam

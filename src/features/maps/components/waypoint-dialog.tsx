@@ -68,7 +68,7 @@ export function WaypointDialog({ open, onOpenChange, waypoint, isMaster, onSubmi
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{waypoint?.titulo}</DialogTitle>
+            <DialogTitle>{waypoint?.titulo || 'Ponto sem título'}</DialogTitle>
           </DialogHeader>
           {waypoint?.imagem_url && (
             <img src={waypoint.imagem_url} alt={waypoint.titulo} className="mb-3 max-h-64 w-full rounded-lg object-cover" />

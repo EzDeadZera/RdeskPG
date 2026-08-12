@@ -45,7 +45,8 @@ export async function listItems(characterId: string): Promise<Item[]> {
 }
 
 async function saveModifiers(itemId: string, modifiers: ItemInput['modificadores']) {
-  await supabase.from('item_attribute_modifiers').delete().eq('item_id', itemId)
+  const { error: deleteError } = await supabase.from('item_attribute_modifiers').delete().eq('item_id', itemId)
+  if (deleteError) throw new Error('Item salvo, mas não foi possível atualizar os modificadores antigos.')
   const rows = modifiers.filter((m) => m.attribute_id).map((m) => ({ item_id: itemId, ...m }))
   if (rows.length > 0) {
     const { error } = await supabase.from('item_attribute_modifiers').insert(rows)

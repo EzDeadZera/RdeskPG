@@ -16,7 +16,8 @@ cp .env.example .env   # preencha com a URL e a anon key do seu projeto Supabase
 npm run dev
 ```
 
-Antes de usar, rode as migrations em `supabase/migrations/` **em ordem** (0001 a 0006) no SQL Editor
+Antes de usar, rode as migrations em `supabase/migrations/` **em ordem** (0001 a 0007 — a 0007 corrige
+um bug real de permissão, veja `supabase/RLS-NOTES.md`) no SQL Editor
 do seu projeto Supabase — veja `supabase/RLS-NOTES.md` pra entender o modelo de permissões, e
 `DEPLOY.md` quando for pra produção.
 
@@ -41,6 +42,29 @@ o projeto foi gerado. Rodando localmente, `npx shadcn@latest add <componente>` f
 Centralizados: qualquer `useMutation`/query que falhar (RLS negando, rede caindo) aparece como toast
 automaticamente (`app/providers/app-providers.tsx`) — não precisa de try/catch em cada formulário.
 Os formulários de autenticação são exceção de propósito (erro inline, mais claro pra login/cadastro).
+
+## Bibliotecas prontas (seed)
+
+`supabase/seed.sql` cria três bibliotecas completas, já com o seu user id preenchido:
+- **Ordem Paranormal** — Força, Agilidade, Intelecto, Presença, Vigor (cada um = dados de d20 rolados),
+  Defesa (fórmula `10 + agilidade`), NEX, PV, PE, Sanidade
+- **Call of Cthulhu 7ª ed.** — as 9 características (STR/CON/SIZ/DEX/APP/INT/POW/EDU/Sorte) em escala
+  percentual, Sanidade (`= poder`), Pontos de Magia (`poder/5`) e Pontos de Vida
+  (`floor((constituicao+tamanho)/10)`) já calculados por fórmula
+- **Dungeons & Dragons 5e (2024)** — os 6 atributos + os 6 modificadores calculados pela fórmula real
+  do livro (`floor((valor-10)/2)`), Classe de Armadura (`10 + mod. Destreza`), 3 livros (Player's
+  Handbook, Dungeon Master's Guide, Monster Manual) e uma campanha teste já com você como mestre
+
+Como esses registros pertencem a um usuário (`owner_id`), confira o comentário no topo do arquivo —
+o valor já está preenchido com o id que apareceu no seu print, mas vale conferir se bate com a conta
+que você quer usar.
+
+## Validações
+
+Só o essencial pra cada registro existir é obrigatório (nome, título, usuário/senha). Campos de
+URL/imagem, descrições e a maioria dos números são opcionais em todo o sistema — a única exceção
+proposital é a imagem base de um mapa, que continua obrigatória porque o mapa não funciona sem ela
+(mas aceita qualquer texto, não exige mais formato estrito de URL).
 
 ## Status
 

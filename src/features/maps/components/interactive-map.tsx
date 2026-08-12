@@ -68,8 +68,8 @@ export function InteractiveMap({ map, isMaster }: { map: CampaignMap; isMaster: 
             onClick={(e) => handlePinClick(e, wp)}
             style={{ left: `${wp.pos_x}%`, top: `${wp.pos_y}%`, backgroundColor: wp.cor || 'var(--primary)' }}
             className="absolute flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-sm shadow-lg transition-transform hover:scale-110"
-            aria-label={wp.titulo}
-            title={wp.titulo}
+            aria-label={wp.titulo || 'Ponto sem título'}
+            title={wp.titulo || 'Ponto sem título'}
           >
             {wp.icone || <MapPin className="size-3.5 text-white" />}
           </button>

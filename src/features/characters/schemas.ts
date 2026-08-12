@@ -8,7 +8,7 @@ export const characterSchema = z.object({
   idade: z.string().max(40).optional().or(z.literal('')),
   aparencia: z.string().max(2000).optional().or(z.literal('')),
   historia: z.string().max(5000).optional().or(z.literal('')),
-  retrato_url: z.string().url('URL inválida').optional().or(z.literal('')),
+  retrato_url: z.string().optional().or(z.literal('')),
 })
 export type CharacterFormValues = z.input<typeof characterSchema>
 export type CharacterInput = z.output<typeof characterSchema>

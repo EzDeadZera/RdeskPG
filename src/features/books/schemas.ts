@@ -5,7 +5,7 @@ export const bookSchema = z.object({
   autor: z.string().max(120).optional().or(z.literal('')),
   descricao: z.string().max(2000).optional().or(z.literal('')),
   sistema: z.string().max(80).optional().or(z.literal('')),
-  imagem_capa_url: z.string().url('URL inválida').optional().or(z.literal('')),
-  arquivo_url: z.string().url('URL inválida').optional().or(z.literal('')),
+  imagem_capa_url: z.string().optional().or(z.literal('')),
+  arquivo_url: z.string().optional().or(z.literal('')),
 })
 export type BookInput = z.infer<typeof bookSchema>

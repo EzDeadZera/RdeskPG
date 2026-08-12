@@ -5,6 +5,6 @@ export const librarySchema = z.object({
   descricao: z.string().max(2000).optional().or(z.literal('')),
   sistema: z.string().max(80).optional().or(z.literal('')),
   livro_base: z.string().max(80).optional().or(z.literal('')),
-  imagem_url: z.string().url('URL inválida').optional().or(z.literal('')),
+  imagem_url: z.string().optional().or(z.literal('')),
 })
 export type LibraryInput = z.infer<typeof librarySchema>

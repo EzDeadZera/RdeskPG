@@ -5,7 +5,7 @@ export const skillLikeSchema = z.object({
   nome: z.string().min(1, 'Obrigatório').max(120),
   tipo: z.string().max(60).optional().or(z.literal('')),
   descricao: z.string().max(2000).optional().or(z.literal('')),
-  imagem_url: z.string().url('URL inválida').optional().or(z.literal('')),
+  imagem_url: z.string().optional().or(z.literal('')),
   dano: z.string().max(60).optional().or(z.literal('')),
   custo: z.string().max(60).optional().or(z.literal('')),
   efeitos: z.string().max(1000).optional().or(z.literal('')),

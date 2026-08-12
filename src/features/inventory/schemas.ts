@@ -12,7 +12,7 @@ export const itemSchema = z.object({
   peso: z.coerce.number().optional(),
   valor: z.coerce.number().optional(),
   descricao: z.string().max(2000).optional().or(z.literal('')),
-  imagem_url: z.string().url('URL inválida').optional().or(z.literal('')),
+  imagem_url: z.string().optional().or(z.literal('')),
   modificadores: z.array(itemModifierSchema).default([]),
 })
 export type ItemFormValues = z.input<typeof itemSchema>
