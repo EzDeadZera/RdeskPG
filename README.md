@@ -43,21 +43,22 @@ Centralizados: qualquer `useMutation`/query que falhar (RLS negando, rede caindo
 automaticamente (`app/providers/app-providers.tsx`) — não precisa de try/catch em cada formulário.
 Os formulários de autenticação são exceção de propósito (erro inline, mais claro pra login/cadastro).
 
-## Bibliotecas prontas (seed)
+## Bibliotecas prontas (Ordem Paranormal, Call of Cthulhu, D&D 5e)
 
-`supabase/seed.sql` cria três bibliotecas completas, já com o seu user id preenchido:
+Sem precisar de SQL: logado no app, no Dashboard Principal (mesmo se já tiver bibliotecas), tem um
+botão **"Bibliotecas de exemplo"** que cria as três direto pela sua conta — usa os mesmos formulários
+que o resto do sistema, então owner_id sai sozinho de quem tá logado. Pode clicar de novo sem medo:
+já pula o que já existe (checa pelo nome).
+
 - **Ordem Paranormal** — Força, Agilidade, Intelecto, Presença, Vigor (cada um = dados de d20 rolados),
   Defesa (fórmula `10 + agilidade`), NEX, PV, PE, Sanidade
-- **Call of Cthulhu 7ª ed.** — as 9 características (STR/CON/SIZ/DEX/APP/INT/POW/EDU/Sorte) em escala
-  percentual, Sanidade (`= poder`), Pontos de Magia (`poder/5`) e Pontos de Vida
-  (`floor((constituicao+tamanho)/10)`) já calculados por fórmula
-- **Dungeons & Dragons 5e (2024)** — os 6 atributos + os 6 modificadores calculados pela fórmula real
-  do livro (`floor((valor-10)/2)`), Classe de Armadura (`10 + mod. Destreza`), 3 livros (Player's
-  Handbook, Dungeon Master's Guide, Monster Manual) e uma campanha teste já com você como mestre
+- **Call of Cthulhu 7ª ed.** — as 9 características em escala percentual, Sanidade (`= poder`),
+  Pontos de Magia (`poder/5`) e Pontos de Vida (`floor((constituicao+tamanho)/10)`)
+- **Dungeons & Dragons 5e (2024)** — os 6 atributos + os 6 modificadores (`floor((valor-10)/2)`),
+  Classe de Armadura, 3 livros e uma campanha teste com você como mestre
 
-Como esses registros pertencem a um usuário (`owner_id`), confira o comentário no topo do arquivo —
-o valor já está preenchido com o id que apareceu no seu print, mas vale conferir se bate com a conta
-que você quer usar.
+`supabase/seed.sql` continua existindo como alternativa via SQL Editor (mesmo conteúdo), pra quem
+preferir popular direto no banco sem passar pelo app.
 
 ## Validações
 

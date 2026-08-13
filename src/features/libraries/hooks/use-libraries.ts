@@ -7,6 +7,7 @@ import {
   listLibraries,
   updateLibrary,
 } from '@/features/libraries/services/library-service'
+import { seedExampleLibraries } from '@/features/libraries/services/seed-example-libraries'
 import type { LibraryInput } from '@/features/libraries/schemas'
 
 const KEY = 'libraries'
@@ -47,6 +48,15 @@ export function useDeleteLibrary() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (id: string) => deleteLibrary(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
+  })
+}
+
+export function useSeedExampleLibraries() {
+  const queryClient = useQueryClient()
+  const { user } = useAuth()
+  return useMutation({
+    mutationFn: () => seedExampleLibraries(user!.id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [KEY] }),
   })
 }

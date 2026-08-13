@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Library, Plus } from 'lucide-react'
+import { toast } from 'sonner'
+import { Library, Loader2, Plus, Sparkles } from 'lucide-react'
 import { EmptyState } from '@/components/common/empty-state'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LibraryFormDialog } from '@/features/libraries/components/library-form-dialog'
-import { useCreateLibrary, useLibraries } from '@/features/libraries/hooks/use-libraries'
+import { useCreateLibrary, useLibraries, useSeedExampleLibraries } from '@/features/libraries/hooks/use-libraries'
 import type { LibraryInput } from '@/features/libraries/schemas'
 
 export function DashboardPage() {
   const navigate = useNavigate()
   const { data: libraries, isLoading } = useLibraries()
   const createLibrary = useCreateLibrary()
+  const seedExamples = useSeedExampleLibraries()
   const [dialogOpen, setDialogOpen] = useState(false)
 
   async function handleCreate(input: LibraryInput) {
@@ -20,18 +22,38 @@ export function DashboardPage() {
     navigate(`/bibliotecas/${created.id}`)
   }
 
+  async function handleSeedExamples() {
+    const result = await seedExamples.mutateAsync()
+    if (result.created.length > 0) {
+      toast.success(`Adicionadas: ${result.created.join(', ')}`)
+    }
+    if (result.skipped.length > 0) {
+      toast.info(`Já existiam (não duplicadas): ${result.skipped.join(', ')}`)
+    }
+  }
+
+  const seedButton = (
+    <Button variant="outline" className="gap-2" onClick={handleSeedExamples} disabled={seedExamples.isPending}>
+      {seedExamples.isPending ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+      Bibliotecas de exemplo
+    </Button>
+  )
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold">Suas bibliotecas</h1>
           <p className="text-sm text-muted-foreground">Cada biblioteca é um sistema de RPG com suas próprias regras.</p>
         </div>
         {libraries && libraries.length > 0 && (
-          <Button className="gap-2" onClick={() => setDialogOpen(true)}>
-            <Plus className="size-4" />
-            Nova Biblioteca
-          </Button>
+          <div className="flex gap-2">
+            {seedButton}
+            <Button className="gap-2" onClick={() => setDialogOpen(true)}>
+              <Plus className="size-4" />
+              Nova Biblioteca
+            </Button>
+          </div>
         )}
       </div>
 
@@ -45,12 +67,15 @@ export function DashboardPage() {
         <EmptyState
           icon={Library}
           title="Nenhuma biblioteca ainda"
-          description="Crie a primeira pra começar a configurar atributos, livros e campanhas."
+          description="Crie a sua do zero, ou carregue Ordem Paranormal, Call of Cthulhu e D&D 5e já prontas, com atributos e fórmulas configurados."
           action={
-            <Button className="gap-2" onClick={() => setDialogOpen(true)}>
-              <Plus className="size-4" />
-              Nova Biblioteca
-            </Button>
+            <div className="flex flex-wrap justify-center gap-2">
+              {seedButton}
+              <Button className="gap-2" onClick={() => setDialogOpen(true)}>
+                <Plus className="size-4" />
+                Nova Biblioteca
+              </Button>
+            </div>
           }
         />
       ) : (
